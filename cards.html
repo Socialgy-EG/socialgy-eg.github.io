@@ -30,19 +30,30 @@
       font-size: 18px;
     }
 
+    .back-link {
+      display: inline-block;
+      margin: 20px;
+      color: #38bdf8;
+      text-decoration: none;
+      font-size: 16px;
+    }
+
     .filters {
       padding: 30px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
     }
 
     .filter-btn {
-      margin: 5px;
-      padding: 12px 30px;
+      padding: 15px 40px;
       border: 2px solid #38bdf8;
       background: transparent;
       color: #38bdf8;
       cursor: pointer;
       border-radius: 8px;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: bold;
       transition: 0.3s;
     }
@@ -54,12 +65,16 @@
     }
 
     .cards-gallery {
-      display: grid;
+      display: none;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 25px;
       padding: 30px;
       max-width: 1200px;
       margin: 0 auto;
+    }
+
+    .cards-gallery.active {
+      display: grid;
     }
 
     .design-card {
@@ -137,14 +152,6 @@
       background: none;
       border: none;
     }
-
-    .back-link {
-      display: inline-block;
-      margin: 20px;
-      color: #38bdf8;
-      text-decoration: none;
-      font-size: 16px;
-    }
   </style>
 </head>
 <body>
@@ -156,16 +163,17 @@
   </header>
 
   <section class="filters">
-    <button class="filter-btn active" data-category="cars">سيارات</button>
+    <button class="filter-btn" data-category="cars" onclick="showCategory('cars', this)">سيارات</button>
   </section>
 
-  <section class="cards-gallery">
-    <div class="design-card" data-category="cars" onclick="openModal('Car-1Front.jpg')">
+  <!-- معرض السيارات -->
+  <section class="cards-gallery" id="gallery-cars">
+    <div class="design-card" onclick="openModal('Car-1Front.jpg')">
       <img src="Car-1Front.jpg" alt="كارت سيارات وش">
       <p>كارت سيارات - الوش</p>
     </div>
 
-    <div class="design-card" data-category="cars" onclick="openModal('Car-1Back.jpg')">
+    <div class="design-card" onclick="openModal('Car-1Back.jpg')">
       <img src="Car-1Back.jpg" alt="كارت سيارات ضهر">
       <p>كارت سيارات - الضهر</p>
     </div>
@@ -181,6 +189,17 @@
   </div>
 
   <script>
+    function showCategory(category, btn) {
+      // اخفي كل المعارض
+      document.querySelectorAll('.cards-gallery').forEach(g => g.classList.remove('active'));
+      // اظهر المعرض المطلوب
+      document.getElementById('gallery-' + category).classList.add('active');
+
+      // تفعيل الزرار
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
     function openModal(imgSrc) {
       document.getElementById('modalImg').src = imgSrc;
       const msg = encodeURIComponent("السلام عليكم، أنا مهتم بطلب التصميم ده 👇\n" + window.location.origin + "/" + imgSrc);
